@@ -28,7 +28,7 @@ class ssh inherits ssh::params {
     ensure => present
   }
 
-  if member(hiera_include('classes'), 'firewall') {
+  if member(hiera_array('classes'), 'firewall') {
     firewall { '100 allow ssh access':
       action => accept,
       port   => 22,
