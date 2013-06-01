@@ -23,7 +23,16 @@
 # Copyright 2013 Andrew Leonard
 #
 class ssh inherits ssh::params {
+
   package { [ $ssh::client_pkg, $ssh::server_pkg ]:
     ensure => present
+  }
+
+  if member(hiera_include('classes'), 'firewall') {
+    firewall { '100 allow ssh access':
+      action => accept,
+      port   => 22,
+      proto  => tcp,
+    }
   }
 }
