@@ -23,7 +23,7 @@
 # Copyright 2013 Andrew Leonard
 #
 class ssh inherits ssh::params {
-  package { [ $openssh::client_pkg, $openssh::server_pkg ]:
+  package { [ $ssh::client_pkg, $ssh::server_pkg ]:
     ensure => present
   }
 }
