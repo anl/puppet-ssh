@@ -23,7 +23,8 @@
 # Copyright 2013 Andrew Leonard
 #
 class ssh (
-  $fw_rules = {}
+  $fw_rules = { 'open' => { name   => '100 allow ssh access',
+                            action => accept } }
   ) inherits ssh::params {
 
   package { [ $ssh::client_pkg, $ssh::server_pkg ]:
