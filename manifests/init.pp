@@ -6,9 +6,9 @@
 #
 # Document parameters here.
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# [*fw_rules*]
+#   Hash of firewall rules to be passed to puppetlabs-firewall's "firewall"
+#   type; expected to include a "name" key/value pair for ordering.
 #
 # === Examples
 #
@@ -22,17 +22,22 @@
 #
 # Copyright 2013 Andrew Leonard
 #
-class ssh inherits ssh::params {
+class ssh (
+  $fw_rules = { name   => '100 allow ssh access',
+                action => 'accept' }
+  ) inherits ssh::params {
 
   package { [ $ssh::client_pkg, $ssh::server_pkg ]:
     ensure => present
   }
 
   if member(hiera_array('classes'), 'firewall') {
-    firewall { '100 allow ssh access':
-      action => accept,
-      port   => 22,
-      proto  => tcp,
+
+    $fw_defaults = {
+      port  => 22,
+      proto => 'tcp'
     }
+
+    create_resources(firewall, $fw_rules, $fw_defaults)
   }
 }
