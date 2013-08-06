@@ -31,13 +31,4 @@ class ssh (
     ensure => present
   }
 
-  if member(hiera_array('classes'), 'firewall') {
-
-    $fw_defaults = {
-      port  => 22,
-      proto => 'tcp'
-    }
-
-    create_resources(firewall, $fw_rules, $fw_defaults)
-  }
 }
